@@ -12,4 +12,8 @@ const getNonSensitivePatients = (): NonSensitivePatients[] => {
         })
     );
 };
-export default { getNonSensitivePatients };
+
+const addPatient = (payload: unknown) => {
+    return payload;
+};
+export default { getNonSensitivePatients, addPatient };

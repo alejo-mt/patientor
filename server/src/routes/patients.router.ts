@@ -8,8 +8,10 @@ router.get("/", (_req, res) => {
     res.json(result);
 });
 
-router.post("/", (_req, res) => {
-    res.send("Saving a diary!");
+router.post("/", (req, res) => {
+    const { body } = req;
+    const result = service.addPatient(body);
+    res.json(result);
 });
 
 export default router;
