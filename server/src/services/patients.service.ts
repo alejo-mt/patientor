@@ -1,19 +1,19 @@
+import { v1 as uuid } from "uuid";
 import patientsData from "../../data/patients.data";
-import { NonSensitivePatients } from "../types";
+import { NewPatient, NonSensitivePatients, Patient } from "../types";
 
 const getNonSensitivePatients = (): NonSensitivePatients[] => {
-    return patientsData.map(
-        ({ id, name, dateOfBirth, gender, occupation }) => ({
-            id,
-            name,
-            dateOfBirth,
-            gender,
-            occupation,
-        })
-    );
+    // Infered type -> patient: Patient
+    return patientsData.map((patient: Patient) => {
+        const { id, name, dateOfBirth, gender, occupation } = patient;
+        return { id, name, dateOfBirth, gender, occupation };
+    });
 };
 
-const addPatient = (payload: unknown) => {
-    return payload;
+const addPatient = (payload: NewPatient): Patient => {
+    const id = uuid();
+    const newPatient = { id, ...payload };
+    return newPatient;
 };
+
 export default { getNonSensitivePatients, addPatient };
