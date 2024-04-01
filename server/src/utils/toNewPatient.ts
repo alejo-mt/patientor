@@ -50,8 +50,11 @@ const isDate = (date: string): boolean => {
 };
 
 const isGender = (value: string): value is Gender => {
-    const allowedGenders = ["male", "female", "others"];
-    if (!allowedGenders.includes(value)) {
+    if (
+        !Object.values(Gender)
+            .map((v) => v.toString())
+            .includes(value)
+    ) {
         return false;
     }
     return true;
