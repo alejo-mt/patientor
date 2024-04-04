@@ -19,6 +19,7 @@ const toNewPatient = (payload: unknown): NewPatient => {
         ssn: parseString(payload.ssn),
         gender: parseGender(payload.gender),
         occupation: parseString(payload.occupation),
+        entries: [],
     };
 
     return newPatient;

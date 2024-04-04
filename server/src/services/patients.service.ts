@@ -10,10 +10,19 @@ const getNonSensitivePatients = (): NonSensitivePatients[] => {
     });
 };
 
+const getById = (patientId: string): Patient | null => {
+    const patient = patientsData.find((patient) => patient.id === patientId);
+    if (patient) {
+        patient.entries = [];
+        return patient;
+    }
+    return null;
+};
+
 const addPatient = (payload: NewPatient): Patient => {
     const id = uuid();
     const newPatient = { id, ...payload };
     return newPatient;
 };
 
-export default { getNonSensitivePatients, addPatient };
+export default { getNonSensitivePatients, addPatient, getById };
