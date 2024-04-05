@@ -2,12 +2,11 @@ import FemaleIcon from '@mui/icons-material/Female';
 import MaleIcon from '@mui/icons-material/Male';
 import { Patient } from '../../types';
 import { Typography } from '@mui/material';
-import PatientEntry from './PatientEntry';
+import PatientEntryContainer from './PatientEntry';
 
 type PatientInfoProps = { patient: Patient };
 
 function PatientInfo({ patient }: PatientInfoProps) {
-  console.log('pat', patient.entries);
   return (
     <>
       <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
@@ -34,7 +33,7 @@ function PatientInfo({ patient }: PatientInfoProps) {
         Entries
       </Typography>
       {patient.entries.map((entry) => (
-        <PatientEntry key={entry.id} entry={entry} />
+        <PatientEntryContainer key={entry.id} entry={entry} />
       ))}
     </>
   );
