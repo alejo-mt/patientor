@@ -1,4 +1,5 @@
-import { Gender, NewPatient } from "../types";
+import { parseString, parseDate, parseGender } from "./parser";
+import { NewPatient } from "../types";
 
 const toNewPatient = (payload: unknown): NewPatient => {
     if (!payload || !(payload instanceof Object))
@@ -23,42 +24,6 @@ const toNewPatient = (payload: unknown): NewPatient => {
     };
 
     return newPatient;
-};
-
-const parseString = (value: unknown): string => {
-    if (!isString(value)) throw Error(`Incorrect or missing value: ${value}`);
-    return value;
-};
-
-const parseGender = (value: unknown) => {
-    if (!isString(value) || !isGender(value))
-        throw Error(`Incorrect or missing gender: ${value}`);
-    return value;
-};
-
-const parseDate = (value: unknown) => {
-    if (!isString(value) || !isDate(value))
-        throw Error(`Incorrect or missing date: ${value}`);
-    return value;
-};
-
-const isString = (text: unknown): text is string => {
-    return typeof text === "string";
-};
-
-const isDate = (date: string): boolean => {
-    return Boolean(Date.parse(date));
-};
-
-const isGender = (value: string): value is Gender => {
-    if (
-        !Object.values(Gender)
-            .map((v) => v.toString())
-            .includes(value)
-    ) {
-        return false;
-    }
-    return true;
 };
 
 export default toNewPatient;
