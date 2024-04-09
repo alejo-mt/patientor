@@ -21,14 +21,11 @@ router.post("/", (req, res) => {
         const result = service.addPatient(newPatient);
         return res.json(result);
     } catch (error: unknown) {
-        let message = `Someting went wrong: `;
+        let message = `Something went wrong. `;
         if (error instanceof Error) {
-            console.log("error.message", error.message);
-            message += error.message;
+            message += " Error: " + error.message;
         }
-        return res.status(400).json({
-            error: message,
-        });
+        return res.status(400).send(message);
     }
 });
 
@@ -40,14 +37,11 @@ router.post("/:id/entries", (req, res) => {
         const result = service.addEntry(id, newEntry);
         return res.json(result);
     } catch (error) {
-        let message = `Someting went wrong: `;
+        let message = `Something went wrong. `;
         if (error instanceof Error) {
-            console.log("error.message", error.message);
-            message += error.message;
+            message += "Error: " + error.message;
         }
-        return res.status(400).json({
-            error: message,
-        });
+        return res.status(400).send(message);
     }
 });
 
