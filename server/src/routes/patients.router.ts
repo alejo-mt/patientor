@@ -37,7 +37,8 @@ router.post("/:id/entries", (req, res) => {
         const { id } = req.params;
         const payload = req.body as unknown;
         const newEntry = toNewEntry(payload);
-        return res.json({ newEntry, id });
+        const result = service.addEntry(id, newEntry);
+        return res.json(result);
     } catch (error) {
         let message = `Someting went wrong: `;
         if (error instanceof Error) {

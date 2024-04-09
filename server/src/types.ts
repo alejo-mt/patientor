@@ -11,7 +11,10 @@ export type NewEntry =
     | Omit<OccupationalHealthcareEntry, "id">
     | Omit<HospitalEntry, "id">;
 
-type Entry = HealthCheckEntry | OccupationalHealthcareEntry | HospitalEntry;
+export type Entry =
+    | HealthCheckEntry
+    | OccupationalHealthcareEntry
+    | HospitalEntry;
 
 interface HealthCheckEntry extends BaseEntry {
     type: "HealthCheck";
