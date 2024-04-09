@@ -47,6 +47,7 @@ const PatientListPage = ({ patients, setPatients }: Props) => {
             'Something went wrong. Error: ',
             ''
           );
+
           console.error(message);
           setError(message);
         } else {

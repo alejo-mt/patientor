@@ -1,12 +1,17 @@
 import FemaleIcon from '@mui/icons-material/Female';
 import MaleIcon from '@mui/icons-material/Male';
-import { Patient } from '../../types';
+import { EntryFormValues, Patient } from '../../types';
 import { Typography } from '@mui/material';
 import PatientEntryContainer from './PatientEntry';
+import AddEntryForm from './AddEntryForm';
 
-type PatientInfoProps = { patient: Patient };
+type PatientInfoProps = {
+  patient: Patient;
+  onSubmit: (payload: EntryFormValues) => void;
+  error?: string;
+};
 
-function PatientInfo({ patient }: PatientInfoProps) {
+function PatientInfo({ patient, onSubmit, error }: PatientInfoProps) {
   return (
     <>
       <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
@@ -29,6 +34,7 @@ function PatientInfo({ patient }: PatientInfoProps) {
           {patient.occupation}
         </p>
       </div>
+      <AddEntryForm onSubmit={onSubmit} error={error} />
       <Typography variant='h5' style={{ marginBottom: '0.5em' }}>
         Entries
       </Typography>

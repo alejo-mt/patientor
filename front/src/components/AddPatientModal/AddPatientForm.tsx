@@ -1,4 +1,4 @@
-import { useState, SyntheticEvent } from 'react';
+import { useState } from 'react';
 
 import {
   TextField,
@@ -45,8 +45,7 @@ const AddPatientForm = ({ onCancel, onSubmit }: Props) => {
     }
   };
 
-  const addPatient = (event: SyntheticEvent) => {
-    event.preventDefault();
+  const addPatient = () => {
     onSubmit({
       name,
       occupation,

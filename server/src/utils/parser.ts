@@ -29,11 +29,11 @@ const parseDiagnosisCodes = (payload: object): Array<Diagnosis["code"]> => {
 };
 
 const parseHealthCheckRating = (value: unknown): HealthCheckRating => {
-    if (!isString(value) || !(value in HealthCheckRating))
+    if (!isNumber(value) || !(value in HealthCheckRating))
         throw Error(`Incorrect or missing health rating: ${value}`);
 
     const rating: HealthCheckRating =
-        HealthCheckRating[value as keyof typeof HealthCheckRating];
+        HealthCheckRating[value.toString() as keyof typeof HealthCheckRating];
     if (rating === undefined) {
         throw Error(`Invalid health rating: ${value}`);
     }
@@ -62,6 +62,10 @@ const isArray = (value: unknown): value is [] => {
 
 const isString = (text: unknown): text is string => {
     return typeof text === "string";
+};
+
+const isNumber = (value: unknown): value is number => {
+    return typeof value === "number";
 };
 
 const isDate = (date: string): boolean => {
