@@ -19,11 +19,9 @@ type PatientInfoProps = {
 };
 
 function PatientInfo({ patient, onSubmit, error }: PatientInfoProps) {
-  // const [type, setType] = useState<HealthCheckEntry['type']>('HealthCheck');
   const [type, setType] = useState<HealthCheckEntry['type'] | string>('');
 
   const onTypeChange = (event: SelectChangeEvent<string>) => {
-    // console.log('event', event.target.value);
     setType(event.target.value);
   };
 

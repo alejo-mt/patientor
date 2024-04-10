@@ -25,7 +25,6 @@ type AddEntryFormProps = {
 };
 
 function AddEntryForm({ type, onSubmit, error }: AddEntryFormProps) {
-  // const [type, setType] = useState<Entry['type'] | null>('HealthCheck');
   const [date, setDate] = useState('');
   const [description, setDescription] = useState('');
   const [specialist, setSpecialist] = useState('');
@@ -38,8 +37,11 @@ function AddEntryForm({ type, onSubmit, error }: AddEntryFormProps) {
     startDate: '',
     endDate: '',
   });
+  const [discharge, setDischarge] = useState({
+    date: '',
+    criteria: '',
+  });
 
-  console.log('sickLeave', sickLeave);
   const handleAddDiagnosisCode = () => {
     if (
       diagnosisCodeInput.trim() !== '' &&
@@ -76,6 +78,13 @@ function AddEntryForm({ type, onSubmit, error }: AddEntryFormProps) {
           type,
           employerName,
           sickLeave,
+        });
+        break;
+      case 'Hospital':
+        onSubmit({
+          ...baseEntry,
+          type,
+          discharge,
         });
         break;
 
@@ -196,7 +205,6 @@ function AddEntryForm({ type, onSubmit, error }: AddEntryFormProps) {
                   type='date'
                   fullWidth
                   name='startDate'
-                  required
                 />
               </Grid>
               <Grid item xs={6}>
@@ -209,12 +217,45 @@ function AddEntryForm({ type, onSubmit, error }: AddEntryFormProps) {
                   type='date'
                   fullWidth
                   name='endDate'
-                  required
                 />
               </Grid>
             </Grid>
           </>
         )}
+        {type === 'Hospital' && (
+          <>
+            <Grid item xs={12}>
+              <InputLabel>Discharge</InputLabel>
+            </Grid>
+            <Grid item container spacing={2}>
+              <Grid item xs={6}>
+                <InputLabel>Date</InputLabel>
+                <TextField
+                  onChange={({ target }) =>
+                    setDischarge({ ...discharge, [target.name]: target.value })
+                  }
+                  value={discharge.date}
+                  type='date'
+                  fullWidth
+                  name='date'
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <InputLabel>Criteria</InputLabel>
+                <TextField
+                  onChange={({ target }) =>
+                    setDischarge({ ...discharge, [target.name]: target.value })
+                  }
+                  value={discharge.criteria}
+                  type='text'
+                  fullWidth
+                  name='criteria'
+                />
+              </Grid>
+            </Grid>
+          </>
+        )}
+
         <Grid item xs={12}>
           <Button type='submit' variant='contained' color='primary'>
             Submit
