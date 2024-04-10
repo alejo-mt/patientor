@@ -1,4 +1,4 @@
-interface BaseEntry {
+export interface BaseEntry {
   id: string;
   date: string;
   description: string;

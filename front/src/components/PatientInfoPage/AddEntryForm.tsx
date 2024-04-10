@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { SyntheticEvent, useState } from 'react';
 import {
   TextField,
   Button,
@@ -11,15 +11,21 @@ import {
   Select,
   MenuItem,
 } from '@mui/material';
-import { EntryFormValues, HealthCheckRating } from '../../types';
+import {
+  EntryFormValues,
+  Entry,
+  HealthCheckRating,
+  BaseEntry,
+} from '../../types';
 
 type AddEntryFormProps = {
+  type: Entry['type'];
   onSubmit: (payload: EntryFormValues) => void;
   error?: string;
 };
 
-function AddEntryForm({ onSubmit, error }: AddEntryFormProps) {
-  const type = 'HealthCheck';
+function AddEntryForm({ type, onSubmit, error }: AddEntryFormProps) {
+  // const [type, setType] = useState<Entry['type'] | null>('HealthCheck');
   const [date, setDate] = useState('');
   const [description, setDescription] = useState('');
   const [specialist, setSpecialist] = useState('');
@@ -27,7 +33,13 @@ function AddEntryForm({ onSubmit, error }: AddEntryFormProps) {
   const [diagnosisCodes, setDiagnosisCodes] = useState<string[]>([]);
 
   const [healthCheckRating, setHealthCheckRating] = useState<number>(0);
+  const [employerName, setEmployerName] = useState('');
+  const [sickLeave, setSickLeave] = useState({
+    startDate: '',
+    endDate: '',
+  });
 
+  console.log('sickLeave', sickLeave);
   const handleAddDiagnosisCode = () => {
     if (
       diagnosisCodeInput.trim() !== '' &&
@@ -42,15 +54,34 @@ function AddEntryForm({ onSubmit, error }: AddEntryFormProps) {
     setDiagnosisCodes(diagnosisCodes.filter((c) => c !== code));
   };
 
-  const addNewEntry = () => {
-    onSubmit({
+  const addNewEntry = (event: SyntheticEvent) => {
+    event.preventDefault();
+    const baseEntry: Omit<BaseEntry, 'id'> = {
       date,
       description,
       specialist,
-      type,
       diagnosisCodes,
-      healthCheckRating,
-    });
+    };
+    switch (type) {
+      case 'HealthCheck':
+        onSubmit({
+          ...baseEntry,
+          type,
+          healthCheckRating,
+        });
+        break;
+      case 'OccupationalHealthcare':
+        onSubmit({
+          ...baseEntry,
+          type,
+          employerName,
+          sickLeave,
+        });
+        break;
+
+      default:
+        break;
+    }
   };
 
   return (
@@ -58,10 +89,12 @@ function AddEntryForm({ onSubmit, error }: AddEntryFormProps) {
       {error && <Alert severity='error'>{error}</Alert>}
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <Typography variant='h6'>Health Check Entry</Typography>
+          <Typography variant='h6'>{type}</Typography>
         </Grid>
 
         <Grid item xs={12}>
+          <InputLabel>Date</InputLabel>
+
           <TextField
             onChange={({ target }) => setDate(target.value)}
             value={date}
@@ -114,28 +147,74 @@ function AddEntryForm({ onSubmit, error }: AddEntryFormProps) {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item xs={12}>
-          <FormControl fullWidth>
-            <InputLabel id='healthCheckRatingLabel'>
-              Health Check Rating
-            </InputLabel>
-            <Select
-              labelId='healthCheckRatingLabel'
-              value={healthCheckRating}
-              onChange={(e) =>
-                setHealthCheckRating(
-                  Number(e.target.value) as HealthCheckRating
-                )
-              }
-            >
-              {Object.values([0, 1, 2, 3]).map((rating) => (
-                <MenuItem key={rating} value={rating}>
-                  {rating}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Grid>
+        {type === 'HealthCheck' && (
+          <Grid item xs={12}>
+            <FormControl fullWidth>
+              <InputLabel id='healthCheckRatingLabel'>
+                Health Check Rating
+              </InputLabel>
+              <Select
+                labelId='healthCheckRatingLabel'
+                value={healthCheckRating}
+                onChange={(e) =>
+                  setHealthCheckRating(
+                    Number(e.target.value) as HealthCheckRating
+                  )
+                }
+              >
+                {Object.values([0, 1, 2, 3]).map((rating) => (
+                  <MenuItem key={rating} value={rating}>
+                    {rating}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+        )}
+        {type === 'OccupationalHealthcare' && (
+          <>
+            <Grid item xs={12}>
+              <TextField
+                onChange={({ target }) => setEmployerName(target.value)}
+                value={employerName}
+                label='Employer'
+                fullWidth
+                required
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <InputLabel>Sick Leave</InputLabel>
+            </Grid>
+            <Grid item container spacing={2}>
+              <Grid item xs={6}>
+                <InputLabel>Start date</InputLabel>
+                <TextField
+                  onChange={({ target }) =>
+                    setSickLeave({ ...sickLeave, [target.name]: target.value })
+                  }
+                  value={sickLeave.startDate}
+                  type='date'
+                  fullWidth
+                  name='startDate'
+                  required
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <InputLabel>End date</InputLabel>
+                <TextField
+                  onChange={({ target }) =>
+                    setSickLeave({ ...sickLeave, [target.name]: target.value })
+                  }
+                  value={sickLeave.endDate}
+                  type='date'
+                  fullWidth
+                  name='endDate'
+                  required
+                />
+              </Grid>
+            </Grid>
+          </>
+        )}
         <Grid item xs={12}>
           <Button type='submit' variant='contained' color='primary'>
             Submit

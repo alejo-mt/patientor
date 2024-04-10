@@ -1,9 +1,16 @@
 import FemaleIcon from '@mui/icons-material/Female';
 import MaleIcon from '@mui/icons-material/Male';
-import { EntryFormValues, Patient } from '../../types';
-import { Typography } from '@mui/material';
+import { Entry, EntryFormValues, HealthCheckEntry, Patient } from '../../types';
+import {
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  Typography,
+} from '@mui/material';
 import PatientEntryContainer from './PatientEntry';
 import AddEntryForm from './AddEntryForm';
+import { useState } from 'react';
 
 type PatientInfoProps = {
   patient: Patient;
@@ -12,6 +19,14 @@ type PatientInfoProps = {
 };
 
 function PatientInfo({ patient, onSubmit, error }: PatientInfoProps) {
+  // const [type, setType] = useState<HealthCheckEntry['type']>('HealthCheck');
+  const [type, setType] = useState<HealthCheckEntry['type'] | string>('');
+
+  const onTypeChange = (event: SelectChangeEvent<string>) => {
+    // console.log('event', event.target.value);
+    setType(event.target.value);
+  };
+
   return (
     <>
       <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
@@ -34,7 +49,40 @@ function PatientInfo({ patient, onSubmit, error }: PatientInfoProps) {
           {patient.occupation}
         </p>
       </div>
-      <AddEntryForm onSubmit={onSubmit} error={error} />
+      <div style={{ marginBottom: '2rem' }}>
+        <InputLabel style={{ marginBottom: '0.1rem' }} id='type_label'>
+          <p>
+            <strong>Add a new entry: </strong>
+            Select a type of entry
+          </p>
+        </InputLabel>
+        <Select
+          labelId='type_label'
+          fullWidth
+          value={type}
+          onChange={onTypeChange}
+        >
+          {[
+            { label: 'HealthCheck', value: 'HealthCheck' },
+            {
+              label: 'OccupationalHealthcare',
+              value: 'OccupationalHealthcare',
+            },
+            { label: 'Hospital', value: 'Hospital' },
+          ].map((option) => (
+            <MenuItem key={option.label} value={option.value}>
+              {option.label}
+            </MenuItem>
+          ))}
+        </Select>
+      </div>
+      {type !== '' && (
+        <AddEntryForm
+          onSubmit={onSubmit}
+          error={error}
+          type={type as Entry['type']}
+        />
+      )}
       <Typography variant='h5' style={{ marginBottom: '0.5em' }}>
         Entries
       </Typography>

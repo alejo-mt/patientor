@@ -44,8 +44,10 @@ const parseHealthCheckRating = (value: unknown): HealthCheckRating => {
 const parseSickLeave = (
     payload: object
 ): OccupationalHealthcareEntry["sickLeave"] => {
+    if (!("sickLeave" in payload)) {
+        return {} as OccupationalHealthcareEntry["sickLeave"];
+    }
     if (
-        !("sickLeave" in payload) ||
         !(payload.sickLeave instanceof Object) ||
         !("startDate" in payload.sickLeave) ||
         !("endDate" in payload.sickLeave)
