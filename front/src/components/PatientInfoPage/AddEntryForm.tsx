@@ -1,4 +1,5 @@
-import { SyntheticEvent, useState } from 'react';
+import { SyntheticEvent, useEffect, useState } from 'react';
+import diagnosesService from '../../services/diagnoses';
 import {
   TextField,
   Button,
@@ -16,6 +17,7 @@ import {
   Entry,
   HealthCheckRating,
   BaseEntry,
+  Diagnosis,
 } from '../../types';
 
 type AddEntryFormProps = {
@@ -25,6 +27,18 @@ type AddEntryFormProps = {
 };
 
 function AddEntryForm({ type, onSubmit, error }: AddEntryFormProps) {
+  const [avaibleDiagnosisCode, setAvaibleDiagnosisCode] = useState<Diagnosis[]>(
+    []
+  );
+
+  useEffect(() => {
+    const fetchDiagnoses = async () => {
+      const data = await diagnosesService.getAll();
+      setAvaibleDiagnosisCode(data);
+    };
+    fetchDiagnoses();
+  }, []);
+
   const [date, setDate] = useState('');
   const [description, setDescription] = useState('');
   const [specialist, setSpecialist] = useState('');
@@ -149,11 +163,18 @@ function AddEntryForm({ type, onSubmit, error }: AddEntryFormProps) {
           </Grid>
           <Grid container spacing={1} alignItems='center'>
             <Grid item>
-              <TextField
-                label='Add Diagnosis Code'
-                value={diagnosisCodeInput}
+              <Select
+                labelId='demo-multiple-name-label'
+                id='demo-multiple-name'
+                value={diagnosisCodes[0]}
                 onChange={(e) => setDiagnosisCodeInput(e.target.value)}
-              />
+              >
+                {avaibleDiagnosisCode.map((item) => (
+                  <MenuItem key={item.code} value={item.code}>
+                    {item.code}: {item.name}
+                  </MenuItem>
+                ))}
+              </Select>
             </Grid>
             <Grid item>
               <Button variant='outlined' onClick={handleAddDiagnosisCode}>
