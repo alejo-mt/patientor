@@ -1,6 +1,6 @@
 # Patientor
 
-In this practice we are going to create a simple project with Typescript. This is app is for patients registration: we collect important informacion and the diagnosis of each one.
+In this practice, we are going to create a simple project with Typescript. This app is for patient registration: we collect important information and the diagnosis of each one.
 
 ## Objetives:
 
