@@ -42,6 +42,12 @@ function AddEntryForm({ type, onSubmit, error }: AddEntryFormProps) {
     criteria: '',
   });
 
+  const displayTypeValues = {
+    HealthCheck: 'Health Check',
+    OccupationalHealthcare: 'Occupational Healthcare',
+    Hospital: 'Hospital',
+  };
+
   const handleAddDiagnosisCode = () => {
     if (
       diagnosisCodeInput.trim() !== '' &&
@@ -98,7 +104,7 @@ function AddEntryForm({ type, onSubmit, error }: AddEntryFormProps) {
       {error && <Alert severity='error'>{error}</Alert>}
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <Typography variant='h6'>{type}</Typography>
+          <Typography variant='h6'>{displayTypeValues[type]}</Typography>
         </Grid>
 
         <Grid item xs={12}>

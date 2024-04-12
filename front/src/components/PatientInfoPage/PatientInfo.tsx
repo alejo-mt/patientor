@@ -61,9 +61,9 @@ function PatientInfo({ patient, onSubmit, error }: PatientInfoProps) {
           onChange={onTypeChange}
         >
           {[
-            { label: 'HealthCheck', value: 'HealthCheck' },
+            { label: 'Health Check', value: 'HealthCheck' },
             {
-              label: 'OccupationalHealthcare',
+              label: 'Occupational Healthcare',
               value: 'OccupationalHealthcare',
             },
             { label: 'Hospital', value: 'Hospital' },
